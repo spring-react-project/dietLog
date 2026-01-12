@@ -1,0 +1,32 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin button-base {
+  padding: $space-sm $space-md;
+  border-radius: $border-radius;
+  border: none;
+  cursor: pointer;
+  font-size: $font-size-md;
+  transition: all 0.2s ease;
+}

@@ -1,0 +1,14 @@
+@use "variables" as *;
+@use "mixins" as *;
+@use "reset";
+
+// 전역 스타일
+#root {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $space-md;
+}

@@ -1,0 +1,34 @@
+@import url(https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css);
+/* colors */
+
+$color-primary: #4caf50;   // 메인 그린
+$color-secondary: #81c784;
+$color-danger: #e53935;
+
+$color-bg: #f5f7f6;
+$color-white: #ffffff;
+$color-black: #222222;
+$color-gray: #888888;
+
+/* typography */
+$font-base:'SUIT Variable', sans-serif;
+
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+
+/* layout */
+$container-width: 1200px;
+$border-radius: 8px;
+
+/* spacing */
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 16px;
+$space-lg: 24px;
+$space-xl: 32px;
+
+/* z-index */
+$z-header: 100;
+$z-modal: 1000;
