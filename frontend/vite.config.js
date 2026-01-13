@@ -13,11 +13,7 @@ export default defineConfig({
   devSourcemap: true,
   preprocessorOptions: {
    scss: {
-    additionalData: `
-          @use "variables" as *;
-          @use "mixins" as *;
-        `,
-    includePaths: ["./src/styles"],
+    includePaths: ["./src"],
    },
   },
  },

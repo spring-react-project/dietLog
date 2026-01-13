@@ -1,0 +1,37 @@
+@use "../../styles/variables" as *;
+
+.home-container {
+  background: $background;
+  color: $text;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: $color-primary;
+  margin-bottom: 1.5rem;
+}
+
+.home-error {
+  color: $color-danger;
+  margin: 1rem 0;
+}
+
+.home-loading {
+  color: $color-primary;
+  font-style: italic;
+}
+
+.home-meals {
+  margin-top: 2rem;
+}
+
+.home-meal-item {
+  background: $color-white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
