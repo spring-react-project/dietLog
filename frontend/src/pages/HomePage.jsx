@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
-import "./styles/Home.scss";
+// import "./styles/Home.scss";
 import { mealByDate } from "../api/Meals";
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 const HomePage = () => {
-  const navigate = useNavigate();
+ const navigate = useNavigate();
  const [date] = useState(new Date().toISOString().split("T")[0]);
  const [daily, setDaily] = useState(null);
  const [loading, setLoading] = useState(false);
@@ -57,24 +58,34 @@ const HomePage = () => {
    <div className="recent-meal-wrap">
     <h2>최근 식사</h2>
     <div className="recent-meal-list">
-     {recent3.length === 0 && <div>최근 식사가 없습니다.</div>} 
-      {recent3.map((item) => (
-        <div className="home-meal-item" key={item.id}>
-        {item.name} - {item.calories}kcal
-        </div>
-      ))}
+     {recent3.length === 0 && <div>최근 식사가 없습니다.</div>}
+     {recent3.map((item) => (
+      <Card  key={item.id}>
+       <Card.Img variant="top" src="holder.js/100px180" />
+       <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+        <Card.Text>
+          {item.name} - {item.calories}kcal
+        </Card.Text>
+        <Button variant="primary">Go somewhere</Button>
+       </Card.Body>
+      </Card>
+     ))}
+    </div>
    </div>
-  </div>
-    {/* 버튼(이동/추가) */}
-      <div>
-        <Button variant="outline-secondary" onClick={() => navigate(`/meals?date=${date}`)}>
-          오늘 식단 보기
-        </Button>
+   {/* 버튼(이동/추가) */}
+   <div>
+    <Button
+     variant="outline-secondary"
+     onClick={() => navigate(`/meals?date=${date}`)}
+    >
+     오늘 식단 보기
+    </Button>
 
-        <Button variant="outline-secondary" onClick={() => navigate(`/meals/new`)}>
-          식단 추가
-        </Button>
-      </div>
+    <Button variant="outline-secondary" onClick={() => navigate(`/meals/new`)}>
+     식단 추가
+    </Button>
+   </div>
   </div>
  );
 };
