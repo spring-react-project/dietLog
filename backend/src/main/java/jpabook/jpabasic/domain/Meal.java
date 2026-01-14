@@ -25,8 +25,11 @@ public class Meal extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private MealType type;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+
+//    음식 선택
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "food_id",nullable = false)
+    private Food food;
 
     @Column(nullable = false)
     private Integer calories;
@@ -35,22 +38,29 @@ public class Meal extends BaseTimeEntity {
     private String memo;
 
     @Builder
-    private Meal(LocalDate date, MealType type, String name, Integer calories, String memo) {
+    private Meal(LocalDate date, MealType type, Food food,  String memo) {
         this.date = date;
         this.type = type;
-        this.name = name;
-        this.calories = calories;
+        this.food = food;
+        this.memo = memo;
+        this.calories = food.getCalories();
+    }
+
+    public void update(LocalDate date, MealType type, Food food,  String memo) {
+        this.date = date;
+        this.type = type;
+        this.food = food;
+        this.memo = memo;
+        this.calories =food.getCalories();
         this.memo = memo;
     }
 
-    public void update(LocalDate date, MealType type, String name, Integer calories, String memo) {
-        this.date = date;
-        this.type = type;
-        this.name = name;
-        this.memo = memo;
-        this.calories = this.calories;
-        this.memo = memo;
+    public String getFoodName() {
+        return food.getName();
     }
 
+    public String getIconKey() {
+        return food.getIconKey();
+    }
 
 }

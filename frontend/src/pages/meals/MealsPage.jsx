@@ -9,12 +9,12 @@ const MealsPage = () => {
  const [meals, setMeals] = useState([]);
 
  const handleCreate = async () => {
+  // Food ID 1을 사용 (실제로는 사용자가 선택한 foodId를 사용해야 함)
   await createMeal({
    date: urlDate,
    type: "BREAKFAST",
-   name: "Sample Meal",
+   foodId: 1, // Food 테이블의 id 사용
    memo: "This is a sample meal.",
-   calories: 300,
   });
   // 식사 생성 후 데이터 다시 로드
   const data = await mealByDate(urlDate);

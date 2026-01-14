@@ -11,8 +11,7 @@ import java.time.LocalDate;
 public class MealUpdateRequest {
     private LocalDate date;
     private MealType type;
-    private String name;
-    private Integer calories;
+    private Long foodId;
     private String memo;
 }
 

@@ -4,7 +4,9 @@ import jpabook.jpabasic.api.dto.MealCreateRequest;
 import jpabook.jpabasic.api.dto.MealDailyResponse;
 import jpabook.jpabasic.api.dto.MealResponse;
 import jpabook.jpabasic.api.dto.MealUpdateRequest;
+import jpabook.jpabasic.domain.Food;
 import jpabook.jpabasic.domain.Meal;
+import jpabook.jpabasic.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +21,21 @@ import java.util.List;
 public class MealService {
 
     private final MealRepository mealRepository;
+    private final FoodRepository foodRepository;
 
 //    생성
     public MealResponse create(MealCreateRequest req) {
 
-        validate(req.getDate(),req.getType(),req.getName(),req.getCalories());
+        validate(req.getDate(),req.getType(),req.getFoodId());
+
+        Food food = foodRepository.findById(req.getFoodId())
+                .orElseThrow(()->new IllegalArgumentException("Food not found:"+req.getFoodId()));
 
         Meal meal = Meal.builder()
                 .date(req.getDate())
                 .type(req.getType())
-                .name(req.getName())
-                .calories(req.getCalories())
+                .food(food)
+
                 .memo(req.getMemo())
                 .build();
 
@@ -51,7 +57,7 @@ public class MealService {
                 .map(m->new MealDailyResponse.MealItem(
                         m.getId(),
                         m.getType().name(),
-                        m.getName(),
+                        m.getFood().getName(),
                         m.getCalories()==null? 0: m.getCalories(),
                         m.getMemo()
                 ))
@@ -74,12 +80,14 @@ public class MealService {
 
 //    업데이트
     public MealResponse update(Long id, MealUpdateRequest req) {
-        validate(req.getDate(),req.getType(),req.getName(),req.getCalories());
+        validate(req.getDate(),req.getType(),req.getFoodId());
 
             Meal meal= mealRepository.findById(id)
                     .orElseThrow(()->new IllegalArgumentException("meal not found"+id));
 
-            meal.update(req.getDate(),req.getType(),req.getName(),req.getCalories(),req.getMemo());
+            Food food =foodRepository.findById(req.getFoodId())
+                            .orElseThrow(()->new IllegalArgumentException("Food not found:"+req.getFoodId()));
+            meal.update(req.getDate(),req.getType(),food,req.getMemo());
             return new MealResponse(meal);
 
 
@@ -92,11 +100,10 @@ public class MealService {
     }
 
 //    검증함수
-    private void validate(LocalDate date,Object type,String name,Integer calories){
+    private void validate(LocalDate date,Object type,Long foodId) {
         if(date==null) throw new IllegalArgumentException("date is required");
         if(type==null) throw new IllegalArgumentException("type is required");
-        if(name==null) throw new IllegalArgumentException("name is required");
-        if(calories==null) throw new IllegalArgumentException("calories must be >=0");
+        if(foodId==null) throw new IllegalArgumentException("foodId is required");
     }
 
 }

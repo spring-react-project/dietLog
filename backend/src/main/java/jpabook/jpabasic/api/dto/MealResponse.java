@@ -23,7 +23,7 @@ public class MealResponse {
         this.id = meal.getId();
         this.date = meal.getDate();
         this.type = meal.getType();
-        this.name = meal.getName();
+        this.name = meal.getFood().getName();
         this.calories = meal.getCalories();
         this.memo = meal.getMemo();
         this.createdAt = meal.getCreatedAt();
