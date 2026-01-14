@@ -13,3 +13,25 @@
   margin: 0 auto;
   padding: 0 $space-md;
 }
+header {
+  padding: $space-md 0;
+}
+h2{
+  font-size:$font-size-lg; ;
+}
+h3 {
+  font-size:$font-size-xl; 
+  font-weight: 200;
+}
+.content-wrap {
+    margin: $space-md 0;
+    h2{
+        margin-bottom: $space-sm;
+    }
+}
+.btns-wrap {
+    display: flex;
+    justify-content: flex-end;
+    gap: $space-sm;
+    margin-bottom: $space-md;
+}

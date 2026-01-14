@@ -24,5 +24,6 @@ public class MealDailyResponse {
         private String name;
         private int calories;
         private String memo;
+        private String iconKey;
     }
 }

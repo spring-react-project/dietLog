@@ -35,9 +35,39 @@ export const updateMeal = async (mealId, mealData) => {
 export const deleteMeal = async (mealId) => {
     try {
         const response = await apiClient.delete(`/meals/${mealId}`);
-        return response.data;
+        // DELETE 요청은 보통 204 No Content를 반환하므로 data가 없을 수 있음
+        return response.status === 204 || response.status === 200;
     } catch (error) {
         console.error("Failed to delete meal:", error);
+        throw error;
+    }
+}
+
+export const postFoods=async(mealId, foods)=>{
+    try {
+        const response = await apiClient.post(`/meals/${mealId}/foods`, { foods });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to add foods to meal:", error);
+        throw error;
+    }
+}
+export const getFoodsAll=async()=>{
+    try {
+        const response = await apiClient.get('/foods');
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch foods:", error);
+        throw error;
+    }   
+}
+
+export const createFood = async (foodData) => {
+    try {
+        const response = await apiClient.post('/foods', foodData);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to create food:", error);
         throw error;
     }
 }
@@ -45,5 +75,8 @@ export default {
     createMeal,
     mealByDate,
     updateMeal,
-    deleteMeal
+    deleteMeal,
+    postFoods,
+    getFoodsAll,
+    createFood
 };

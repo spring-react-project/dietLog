@@ -1,0 +1,19 @@
+@use "../../styles/variables" as *;
+// @use "reset";
+.meals-new-page{
+    .card{
+
+    padding: $space-xl;
+    }
+    h2{
+        margin-bottom: $space-md;
+    }
+    form{
+        div{
+            margin-bottom: $space-md;
+        }
+        .btn{
+            width: 100%;
+        }
+    }
+}

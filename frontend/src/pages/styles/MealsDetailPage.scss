@@ -1,0 +1,35 @@
+@use "../../styles/variables" as *;
+// @use "reset";
+.food-card {
+ position: relative;
+ .food-icon-wrap {
+  background-color: $color-neutral-100;
+  border-radius: $border-radius;
+  padding: $space-md;
+  text-align: center;
+  font-size: 100px;
+  margin-bottom: $space-md;
+ }
+ .badge {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+ }
+ .memo {
+  background-color: $color-neutral-100;
+  padding: $space-md;
+ }
+ .calory {
+  text-align: center;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  margin: $space-md 0;
+ }
+ .btn-wrap {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $space-md;
+  padding-top: $space-md;
+  border-top: $color-neutral-100 1px solid;
+ }
+}

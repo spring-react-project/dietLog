@@ -1,4 +1,5 @@
 @import url(https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css);
+
 /* colors */
 $background: #f5f7f6;
 $text: #222222;
@@ -10,6 +11,18 @@ $color-bg: #f5f7f6;
 $color-white: #ffffff;
 $color-black: #222222;
 $color-gray: #888888;
+
+// Neutral colors
+$color-neutral-50:  #fafbfc;
+$color-neutral-100: #f5f6fa;
+$color-neutral-200: #e9ebee;
+$color-neutral-300: #d1d5db;
+$color-neutral-400: #b0b6be;
+$color-neutral-500: #8c939d;
+$color-neutral-600: #6b7280;
+$color-neutral-700: #4b5563;
+$color-neutral-800: #374151;
+$color-neutral-900: #1f2937;
 
 /* typography */
 $font-base: "SUIT Variable", sans-serif;

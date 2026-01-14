@@ -17,6 +17,7 @@ const RootLayout = () => {
     const handleSelect = (key) => {
         if (key === "home") navigate("/");
         if (key === "meals") navigate("/meals");
+        if (key === "foods") navigate("/foods");
     };
 
     return (
@@ -28,8 +29,9 @@ const RootLayout = () => {
                     id="uncontrolled-tab-example"
                     className="mb-3"
                 >
-                    <Tab eventKey="home" title="Home" />
-                    <Tab eventKey="meals" title="meals" />
+                    <Tab eventKey="home" title="홈" />
+                    <Tab eventKey="meals" title="오늘식단 전체보기" />
+                    <Tab eventKey="foods" title="칼로리 계산하기" />
                 </Tabs>
             </header>
             <main>

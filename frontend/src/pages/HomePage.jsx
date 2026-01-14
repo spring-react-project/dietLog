@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
-// import "./styles/Home.scss";
+import Badge from "react-bootstrap/Badge";
+import "./styles/Home.scss";
 import { mealByDate } from "../api/Meals";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+
+import { getFoodIcon, getTypeBadge } from "../util/icons";
 const HomePage = () => {
  const navigate = useNavigate();
  const [date] = useState(new Date().toISOString().split("T")[0]);
@@ -41,48 +44,89 @@ const HomePage = () => {
 
  return (
   <div className="home-container">
-   <h1 className="home-title">Home</h1>
+   <h2>오늘의 기록</h2>
    {loading && <div className="home-loading">loading...</div>}
    {error && <div className="home-error">{error}</div>}
-   <div>
-    <p>
-     오늘 ({date}) 총 {couunt}개, {totalCalories}kcal
-    </p>
+
+   <div className="content-wrap calories-wrap">
+    <h3>
+     오늘 ({date}) 총<Badge bg="warning">{couunt}</Badge> 끼 식사
+     <Badge bg="warning">{totalCalories}</Badge> kcal
+    </h3>
    </div>
 
    {daily?.meals && daily.meals.length === 0 && (
     <div>오늘의 식사 기록이 없습니다.</div>
    )}
-   {loading && <div className="home-loading">loading...</div>}
-   {error && <div className="home-error">{error}</div>}
-   <div className="recent-meal-wrap">
+   <div className="content-wrap">
     <h2>최근 식사</h2>
     <div className="recent-meal-list">
      {recent3.length === 0 && <div>최근 식사가 없습니다.</div>}
-     {recent3.map((item) => (
-      <Card  key={item.id}>
-       <Card.Img variant="top" src="holder.js/100px180" />
-       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          {item.name} - {item.calories}kcal
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-       </Card.Body>
-      </Card>
-     ))}
+     {recent3.map((item) => {
+      const typeInfo = getTypeBadge(item.type);
+      const foodIcon = getFoodIcon(item.iconKey);
+      return (
+       <Card key={item.id} className="mb-3">
+        <Card.Body>
+         <div className="d-flex align-items-center justify-content-between mb-3">
+          {/* Food 아이콘 */}
+          <div className="d-flex align-items-center">
+           <span className="fs-1 me-3">{foodIcon}</span>
+           <div>
+            <Card.Title className="mb-1">{item.name}</Card.Title>
+            <Card.Text className="mb-0 text-muted">
+             <strong className="text-dark">{item.calories}</strong> kcal
+            </Card.Text>
+           </div>
+          </div>
+
+          {/* Type 배지 */}
+          <span className={`badge ${typeInfo.className} px-3 py-2`}>
+           <i className={`bi ${typeInfo.icon} me-1`}></i>
+           {typeInfo.label}
+          </span>
+         </div>
+
+         {item.memo && (
+          <Card.Text className="text-muted small mb-2">
+           <i className="bi bi-chat-left-text me-1"></i>
+           {item.memo}
+          </Card.Text>
+         )}
+
+         <Button
+          variant="outline-warning"
+          size="sm"
+          state={{ meal: item }}
+          onClick={() =>
+           navigate(`/meals/${item.id}`, {
+            state: {
+             meal: item,
+             date,
+             totalCalories,
+            },
+           })
+          }
+         >
+          <i className="bi bi-eye me-1"></i>
+          상세보기
+         </Button>
+        </Card.Body>
+       </Card>
+      );
+     })}
     </div>
    </div>
    {/* 버튼(이동/추가) */}
-   <div>
+   <div className="btns-wrap">
     <Button
-     variant="outline-secondary"
+     variant="outline-primary"
      onClick={() => navigate(`/meals?date=${date}`)}
     >
-     오늘 식단 보기
+     오늘 식단 전체 보기
     </Button>
 
-    <Button variant="outline-secondary" onClick={() => navigate(`/meals/new`)}>
+    <Button variant="outline-primary" onClick={() => navigate(`/meals/new`)}>
      식단 추가
     </Button>
    </div>

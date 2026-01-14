@@ -1,0 +1,9 @@
+@use "../../styles/variables" as *;
+// @use "reset";
+.calories-wrap {
+    border:1px solid $color-neutral-300;
+    border-radius: $border-radius;
+    padding:$space-md;
+    background-color: $color-white;
+    text-align: center;
+}

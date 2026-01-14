@@ -59,7 +59,8 @@ public class MealService {
                         m.getType().name(),
                         m.getFood().getName(),
                         m.getCalories()==null? 0: m.getCalories(),
-                        m.getMemo()
+                        m.getMemo(),
+                        m.getFood().getIconKey()
                 ))
                 .toList();
 
