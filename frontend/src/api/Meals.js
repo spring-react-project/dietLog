@@ -71,6 +71,16 @@ export const createFood = async (foodData) => {
         throw error;
     }
 }
+
+export const searchFoods = async (params) => {
+    try {
+        const response = await apiClient.get('/foods/search', { params });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to search foods:", error);
+        throw error;
+    }
+}
 export default {
     createMeal,
     mealByDate,
@@ -78,5 +88,6 @@ export default {
     deleteMeal,
     postFoods,
     getFoodsAll,
-    createFood
+    createFood,
+    searchFoods
 };

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
 import "../styles/MealsNewPage.scss";
-import { createFood, createMeal, getFoodsAll } from "../../api/Meals";
+import { createFood, createMeal, getFoodsAll, searchFoods } from "../../api/Meals";
 
 const initialFoodState = {
  name: "",
@@ -25,6 +26,11 @@ const MealsNewPage = () => {
  const [foodForm, setFoodForm] = useState(initialFoodState);
  const [mealForm, setMealForm] = useState(initialMealState);
  const [foods, setFoods] = useState([]); // 음식 목록
+ const [searchResults, setSearchResults] = useState([]); // CSV 검색 결과
+ const [searchKeyword, setSearchKeyword] = useState(""); // 검색 키워드
+ const [minKcal, setMinKcal] = useState("");
+ const [maxKcal, setMaxKcal] = useState("");
+ const [searchLoading, setSearchLoading] = useState(false);
  const [loading, setLoading] = useState(false);
  const [error, setError] = useState(null);
 
@@ -116,6 +122,73 @@ const MealsNewPage = () => {
   }
  };
 
+ // CSV에서 음식 검색
+ const handleSearch = async () => {
+  if (!searchKeyword.trim() && !minKcal && !maxKcal) {
+   alert("검색어 또는 칼로리 범위를 입력해주세요.");
+   return;
+  }
+
+  setSearchLoading(true);
+  try {
+   const params = {};
+   if (searchKeyword.trim()) params.keyword = searchKeyword.trim();
+   if (minKcal) params.minKcal = parseFloat(minKcal);
+   if (maxKcal) params.maxKcal = parseFloat(maxKcal);
+
+   const results = await searchFoods(params);
+   setSearchResults(results);
+  } catch (err) {
+   console.error("검색 실패:", err);
+   alert("검색에 실패했습니다.");
+   setSearchResults([]);
+  } finally {
+   setSearchLoading(false);
+  }
+ };
+
+ // 검색 결과에서 음식 선택하여 Food로 등록
+ const handleSelectFromSearch = async (searchItem) => {
+  try {
+   // iconKey를 name에서 추론하거나 기본값 사용
+   const iconKeyMap = {
+    라면: "noodle",
+    밥: "rice",
+    고구마: "sweet_potato",
+    닭: "chicken",
+    고기: "meat",
+    생선: "fish",
+    샐러드: "salad",
+    과일: "fruit",
+    커피: "coffee",
+   };
+
+   let iconKey = "rice"; // 기본값
+   for (const [key, value] of Object.entries(iconKeyMap)) {
+    if (searchItem.name.includes(key)) {
+     iconKey = value;
+     break;
+    }
+   }
+
+   const foodData = {
+    name: searchItem.name,
+    calories: Math.round(searchItem.kcal || 0),
+    iconKey: iconKey,
+    category: searchItem.category || null,
+   };
+
+   await createFood(foodData);
+   alert("음식이 등록되었습니다.");
+   setSearchKeyword("");
+   setSearchResults([]);
+   fetchFoods(); // 목록 갱신
+  } catch (err) {
+   console.error("음식 등록 실패:", err);
+   alert("음식 등록에 실패했습니다.");
+  }
+ };
+
  useEffect(() => {
   fetchFoods();
  }, []);
@@ -130,6 +203,86 @@ const MealsNewPage = () => {
      {error}
     </div>
    )}
+
+   <Card className="mb-4">
+    <Card.Header>
+     <h3>칼로리 데이터베이스 검색</h3>
+    </Card.Header>
+    <Card.Body>
+     <div className="mb-3">
+      <Form.Label>음식명 검색</Form.Label>
+      <InputGroup className="mb-2">
+       <Form.Control
+        type="text"
+        placeholder="예: 라면, 김밥, 고구마 등"
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+       />
+       <Button variant="primary" onClick={handleSearch} disabled={searchLoading}>
+        {searchLoading ? "검색 중..." : "검색"}
+       </Button>
+      </InputGroup>
+      <div className="row g-2">
+       <div className="col-md-6">
+        <Form.Label>최소 칼로리</Form.Label>
+        <Form.Control
+         type="number"
+         placeholder="예: 100"
+         value={minKcal}
+         onChange={(e) => setMinKcal(e.target.value)}
+        />
+       </div>
+       <div className="col-md-6">
+        <Form.Label>최대 칼로리</Form.Label>
+        <Form.Control
+         type="number"
+         placeholder="예: 500"
+         value={maxKcal}
+         onChange={(e) => setMaxKcal(e.target.value)}
+        />
+       </div>
+      </div>
+     </div>
+
+     {searchResults.length > 0 && (
+      <div className="mb-3">
+       <h5>검색 결과 ({searchResults.length}개)</h5>
+       <div
+        style={{
+         maxHeight: "300px",
+         overflowY: "auto",
+         border: "1px solid #dee2e6",
+         borderRadius: "0.375rem",
+         padding: "0.5rem",
+        }}
+       >
+        {searchResults.map((item, index) => (
+         <Card key={index} className="mb-2">
+          <Card.Body className="p-2">
+           <div className="d-flex justify-content-between align-items-center">
+            <div>
+             <strong>{item.name}</strong>
+             <div className="text-muted small">
+              {item.kcal}kcal / {item.baseAmount}g | {item.category}
+             </div>
+            </div>
+            <Button
+             size="sm"
+             variant="outline-primary"
+             onClick={() => handleSelectFromSearch(item)}
+            >
+             선택
+            </Button>
+           </div>
+          </Card.Body>
+         </Card>
+        ))}
+       </div>
+      </div>
+     )}
+    </Card.Body>
+   </Card>
 
    <Card className="mb-4">
     <Card.Header>
