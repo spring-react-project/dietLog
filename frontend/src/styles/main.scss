@@ -15,6 +15,31 @@
 }
 header {
   padding: $space-md 0;
+  
+  // Bootstrap Tabs 스타일 보정
+  .nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    
+    .nav-link {
+      color: #495057;
+      border: 1px solid transparent;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: -1px;
+      
+      &:hover {
+        border-color: #e9ecef #e9ecef #dee2e6;
+        isolation: isolate;
+      }
+      
+      &.active {
+        color: #495057;
+        background-color: #fff;
+        border-color: #dee2e6 #dee2e6 #fff;
+      }
+    }
+  }
 }
 h2{
   font-size:$font-size-lg; ;

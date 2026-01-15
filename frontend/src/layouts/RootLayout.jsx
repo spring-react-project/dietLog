@@ -9,15 +9,18 @@ const RootLayout = () => {
 
     // 경로에 따라 탭 선택
     const getActiveKey = () => {
-        if (location.pathname === "/" || location.pathname === "/home") return "home";
-        if (location.pathname.startsWith("/meals")) return "meals";
+        const path = location.pathname;
+        if (path === "/" || path === "/home") return "home";
+        if (path === "/meals" || path === "/meals/all" || (path.startsWith("/meals/") && !path.includes("/new"))) return "mealsAll";
+        if (path === "/meals/new") return "newMeal";
         return "home";
     };
 
     const handleSelect = (key) => {
         if (key === "home") navigate("/");
-        if (key === "meals") navigate("/meals");
-        if (key === "foods") navigate("/foods");
+        if (key === "mealsAll") navigate("/meals");
+        // if (key === "foods") navigate("/foods");
+        if (key === "newMeal") navigate("/meals/new");
     };
 
     return (
@@ -30,8 +33,9 @@ const RootLayout = () => {
                     className="mb-3"
                 >
                     <Tab eventKey="home" title="홈" />
-                    <Tab eventKey="meals" title="오늘식단 전체보기" />
-                    <Tab eventKey="foods" title="칼로리 계산하기" />
+                    <Tab eventKey="mealsAll" title="오늘식단 전체보기" />
+                    {/* <Tab eventKey="foods" title="칼로리 계산하기" /> */}
+                    <Tab eventKey="newMeal" title="새 식단 추가" />
                 </Tabs>
             </header>
             <main>

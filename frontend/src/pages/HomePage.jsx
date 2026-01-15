@@ -59,7 +59,7 @@ const HomePage = () => {
    <div className="btns-wrap d-flex justify-content-between mb-4 ">
     <Button
      variant="outline-primary"
-     onClick={() => navigate(`/meals?date=${date}`)}
+     onClick={() => navigate(`/meals/all?date=${date}`)}
     >
      오늘 식단 전체 보기
     </Button>

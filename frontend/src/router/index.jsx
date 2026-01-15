@@ -13,6 +13,7 @@ export const router = createBrowserRouter([
         children:[
             {index:true, element:<HomePage/>},
             {path:'meals', element:<MealsPage/>},
+            {path:'meals/all', element:<MealsPage/>},
             {path:'meals/new', element:<MealsNewPage/>},
             {path:'meals/:id', element:<MealsDetailPage/>}
         ]

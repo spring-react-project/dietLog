@@ -17,12 +17,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
+// Bootstrap nav 링크는 제외
+a:not(.nav-link):not([class*="nav-"]) {
   text-decoration: none;
   color: inherit;
 }
 
-button {
+// Bootstrap 버튼은 제외하고 기본 버튼만 리셋
+button:not(.btn):not([class*="btn-"]) {
   font-family: inherit;
   background: none;
   border: none;
@@ -50,8 +52,9 @@ p {
   margin: 0;
 }
 
-ul,
-ol {
+// Bootstrap nav는 제외
+ul:not(.nav):not([class*="nav-"]),
+ol:not(.nav):not([class*="nav-"]) {
   margin: 0;
   padding: 0;
   list-style: none;

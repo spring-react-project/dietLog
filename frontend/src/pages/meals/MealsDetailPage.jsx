@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { getFoodIcon, getTypeBadge } from "../../util/icons";
 import "./../styles/MealsDetailPage.scss";
-import { deleteMeal, updateMeal } from "../../api/Meals";
+import { deleteMeal } from "../../api/Meals";
 import Badge from "react-bootstrap/Badge";
+import MealEditModal from "../../components/MealEditModal";
+
 const MealsDetailPage = () => {
  const navigate = useNavigate();
  const location = useLocation();
  const meal = location.state?.meal;
+ const [showEditModal, setShowEditModal] = useState(false);
 
  // state가 없으면 이전 페이지로 이동
  if (!meal) {
@@ -36,26 +39,46 @@ const MealsDetailPage = () => {
    }
   }
  };
+
+ const handleMealUpdated = () => {
+  // 수정 후 페이지 새로고침 또는 데이터 갱신
+  window.location.reload();
+ };
+
  return (
-  <Card className="food-card">
-   <Card.Body>
-    <div className="food-icon-wrap">{foodIcon}</div>
-    <Card.Title>{meal.name}</Card.Title>
-    <span className={`badge ${typeInfo.className} px-3 py-2`}>
-     <i className={`bi ${typeInfo.icon} me-1`}></i>
-     {typeInfo.label}
-    </span>
-    {/* <Card.Title>{typeInfo}</Card.Title> */}
-    <Card.Text className="memo">{meal.memo}</Card.Text>
-    <Card.Text className="calory">{meal.calories} kcal</Card.Text>
-    <div className="btn-wrap">
-     <Button variant="danger" onClick={handleDelete}>
-      삭제하기
-     </Button>
-     <Button variant="success">Go somewhere</Button>
-    </div>
-   </Card.Body>
-  </Card>
+  <>
+   <Card className="food-card">
+    <Card.Body>
+     <div className="food-icon-wrap">{foodIcon}</div>
+     <Card.Title>{meal.name}</Card.Title>
+     <span className={`badge ${typeInfo.className} px-3 py-2`}>
+      <i className={`bi ${typeInfo.icon} me-1`}></i>
+      {typeInfo.label}
+     </span>
+     {meal.memo && <Card.Text className="memo">{meal.memo}</Card.Text>}
+     <Card.Text className="calory">{meal.calories} kcal</Card.Text>
+     <div className="btn-wrap">
+      <Button variant="danger" onClick={handleDelete}>
+       삭제하기
+      </Button>
+      <Button variant="success" onClick={() => setShowEditModal(true)}>
+       <i className="bi bi-pencil me-1"></i>
+       수정하기
+      </Button>
+     </div>
+    </Card.Body>
+   </Card>
+
+   <MealEditModal
+    show={showEditModal}
+    onHide={() => setShowEditModal(false)}
+    meal={{
+     ...meal,
+     date: meal.date || location.state?.date,
+    }}
+    onMealUpdated={handleMealUpdated}
+   />
+  </>
  );
 };
 
